@@ -173,7 +173,24 @@
         // 3. PROFIL & 4. SHOP Tetap Sama (Sesuai Versi Stabil Kamu)
         function loadProfil(el) {
             setActive(el);
-            appContent.innerHTML = `<div class="bg-blue-900 rounded-[40px] p-10 text-white shadow-2xl animate-fadeIn"><h2 class="text-4xl font-black mb-8 italic tracking-tighter text-red-600">DKInews</h2><div class="space-y-6 text-sm"><p class="opacity-80">Media informasi warga Jakarta. Teraktual dan terpercaya.</p><hr class="opacity-10"><p><b>Pemimpin Redaksi:</b> Saifudin<br><b>Alamat:</b> Bangka Raya XII, Jakarta Selatan</p></div></div>`;
+            appContent.innerHTML = `
+                <div class="bg-blue-900 rounded-[40px] p-10 text-white shadow-2xl animate-fadeIn">
+                    <h2 class="text-4xl font-black mb-8 italic tracking-tighter text-red-600">DKInews</h2>
+                    <div class="space-y-8 text-sm">
+                        <section>
+                            <h3 class="text-red-500 font-black uppercase tracking-widest mb-3 text-[10px]">Tentang Kita</h3>
+                            <p class="leading-relaxed text-blue-50 opacity-80">DKInews hadir sebagai wadah informasi tercepat, aktual, dan terpercaya untuk seluruh masyarakat DKI Jakarta dan Indonesia.</p>
+                        </section>
+                        <hr class="opacity-10">
+                        <section>
+                            <h3 class="text-red-500 font-black uppercase tracking-widest mb-3 text-[10px]">Redaksi Utama</h3>
+                            <p class="leading-relaxed text-blue-50">
+                                <b class="text-white font-bold text-xs uppercase">Pemimpin Redaksi:</b><br>Saifudin<br>Redaktur Pelaksana:<br>Kokoh Afu<br>Sekretaris Redaksi:<br>Andika Pratama<br>Wartawan:<br>Teuku Barrun, Kamal, Nico, Juhendri, Yasir, Afi, Junaidi<br>Hukum & Lawyer:<br>Teuku Barrun & Partner Lawfirm<br>Email: redaksidkinews.com<br>
+                                <b class="text-white font-bold text-xs uppercase">Alamat:</b><br>Bangka Raya XII Kemang, Jakarta Selatan
+                            </p>
+                        </section>
+                    </div>
+                </div>`;
         }
 
         async function loadShop(el) {

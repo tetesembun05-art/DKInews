@@ -7,215 +7,197 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
-        body { font-family: 'Inter', sans-serif; }
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #1e293b; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         .active-nav { color: #cc0000; border-top: 3px solid #cc0000; }
         .line-clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-        .animate-fadeIn { animation: fadeIn 0.4s ease-out; }
+        .animate-fadeIn { animation: fadeIn 0.3s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
-<body class="bg-gray-50 pb-24">
+<body class="pb-24">
 
     <header class="bg-white shadow-sm p-4 sticky top-0 z-50 flex justify-between items-center border-b-2 border-blue-900">
-        <h1 class="text-3xl font-black italic tracking-tighter text-blue-900">
-            <span class="text-red-600">D</span>KInews
-        </h1>
-        <button id="adminBtn" class="bg-gray-100 text-[10px] font-bold px-3 py-1 rounded-full border border-gray-300">ADMIN</button>
+        <h1 class="text-3xl font-black italic tracking-tighter text-blue-900"><span class="text-red-600">D</span>KInews</h1>
+        <button id="adminBtn" class="bg-gray-100 text-[10px] font-bold px-3 py-1 rounded-full border border-gray-300 uppercase">Admin</button>
     </header>
 
-    <div class="bg-red-600 text-white overflow-hidden">
-        <marquee class="py-2 italic uppercase font-bold text-[10px] tracking-widest">Informasi Aktual DKI Jakarta & Sekitarnya</marquee>
+    <div class="bg-red-600 text-white overflow-hidden shadow-inner">
+        <marquee class="py-2 italic uppercase font-bold text-[10px] tracking-widest">Referensi Informasi Aktual Berita dan Belanja DKI Jakarta & Sekitarnya</marquee>
     </div>
 
-    <main id="app-content" class="p-4 min-h-screen">
-        <div class="flex flex-col items-center py-20 text-gray-400 font-bold uppercase text-[10px]">
-            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-red-600 mb-4"></div>
-            Memperbarui Informasi...
-        </div>
-    </main>
+    <main id="app-content" class="p-4 min-h-screen"></main>
 
     <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex justify-around items-center shadow-lg z-50">
-        <button onclick="loadBerita(this)" class="nav-item flex flex-col items-center py-3 w-full text-blue-900 active-nav">
-            <span class="text-xl">🏠</span>
-            <span class="text-[10px] font-bold">Beranda</span>
+        <button onclick="loadBerita(this)" class="nav-item flex flex-col items-center py-3 w-full active-nav">
+            <span class="text-xl">🏠</span><span class="text-[10px] font-bold uppercase">Beranda</span>
         </button>
-        <button onclick="loadSeputar(this)" class="nav-item flex flex-col items-center py-3 w-full text-blue-900">
-            <span class="text-xl">📍</span>
-            <span class="text-[10px] font-bold">Seputar DKI</span>
+        <button onclick="loadSeputar(this)" class="nav-item flex flex-col items-center py-3 w-full">
+            <span class="text-xl">📍</span><span class="text-[10px] font-bold uppercase">Seputar DKI</span>
         </button>
-        <button onclick="loadProfil(this)" class="nav-item flex flex-col items-center py-3 w-full text-blue-900">
-            <span class="text-xl">👤</span>
-            <span class="text-[10px] font-bold">Profil</span>
+        <button onclick="loadProfil(this)" class="nav-item flex flex-col items-center py-3 w-full">
+            <span class="text-xl">👤</span><span class="text-[10px] font-bold uppercase">Profil</span>
         </button>
-        <button onclick="loadShop(this)" class="nav-item flex flex-col items-center py-3 w-full text-blue-900">
-            <span class="text-xl">🛒</span>
-            <span class="text-[10px] font-bold">Shop</span>
+        <button onclick="loadShop(this)" class="nav-item flex flex-col items-center py-3 w-full">
+            <span class="text-xl">🛒</span><span class="text-[10px] font-bold uppercase">Shop</span>
         </button>
     </nav>
 
     <div id="adminModal" class="fixed inset-0 bg-black/80 hidden z-[100] flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl w-full max-w-md overflow-hidden shadow-2xl">
-            <div class="bg-blue-900 p-4 flex justify-between items-center text-white font-bold">
-                <span class="text-sm">POSTING BERITA BARU</span>
-                <button onclick="closeAdmin()" class="text-2xl">&times;</button>
-            </div>
-            <div class="p-6 space-y-4 text-sm">
-                <select id="inputType" class="w-full border-2 border-gray-100 p-3 rounded-xl outline-none focus:border-red-600">
-                    <option value="Berita">Posting Beranda</option>
-                    <option value="Seputar_Anda">Posting Seputar DKI</option>
-                    <option value="Shop">Posting Produk Shop</option>
-                </select>
-                <input type="text" id="inputKategori" placeholder="Kategori (Misal: Metropolitan)" class="w-full border-2 border-gray-100 p-3 rounded-xl outline-none focus:border-red-600">
-                <input type="text" id="inputJudul" placeholder="Judul Berita" class="w-full border-2 border-gray-100 p-3 rounded-xl outline-none focus:border-red-600">
-                <input type="text" id="inputFoto" placeholder="Link Foto Cloudinary" class="w-full border-2 border-gray-100 p-3 rounded-xl outline-none focus:border-red-600">
-                <textarea id="inputIsi" placeholder="Tulis berita lengkap di sini..." class="w-full border-2 border-gray-100 p-3 rounded-xl h-32 outline-none focus:border-red-600"></textarea>
-                <button onclick="prosesSubmit()" id="submitBtn" class="w-full bg-red-600 text-white font-black py-4 rounded-xl shadow-lg active:scale-95 transition-all uppercase">POSTING SEKARANG</button>
-            </div>
+        <div class="bg-white rounded-[32px] w-full max-w-md p-6 space-y-4 shadow-2xl">
+            <h2 class="font-black text-blue-900 uppercase text-center border-b pb-2 italic">Input Konten</h2>
+            <select id="inputType" class="w-full border p-3 rounded-xl text-sm font-bold bg-gray-50 uppercase">
+                <option value="Berita">Berita Beranda/Kategori</option>
+                <option value="Seputar_Anda">Seputar DKI</option>
+                <option value="Shop">Produk Shop</option>
+            </select>
+            <input type="text" id="inputKategori" placeholder="Kategori (Contoh: Metropolitan)" class="w-full border p-3 rounded-xl text-sm uppercase">
+            <input type="text" id="inputJudul" placeholder="Judul" class="w-full border p-3 rounded-xl text-sm">
+            <input type="text" id="inputFoto" placeholder="Link URL Foto" class="w-full border p-3 rounded-xl text-sm">
+            <textarea id="inputIsi" placeholder="Isi Berita Lengkap..." class="w-full border p-3 rounded-xl h-32 text-sm"></textarea>
+            <button onclick="prosesSubmit()" id="submitBtn" class="w-full bg-red-600 text-white font-black py-4 rounded-xl uppercase shadow-md active:scale-95 transition-all">Kirim Sekarang</button>
+            <button onclick="closeAdmin()" class="w-full text-gray-400 text-[10px] font-bold uppercase tracking-widest">Tutup</button>
         </div>
     </div>
 
     <script>
-        const BASE_URL = "https://script.google.com/macros/s/AKfycbxj-u5fmHNuxoiuKut-Ii5WmDrwr_liiUDbpkJhHuwM3sl3atFjdu_o4ekKuWrZCH7pMw/exec";
+        const BASE_URL = "https://script.google.com/macros/s/AKfycbzblqWXxlzq5sXjYjOkDuBhqSHJAjv1N5Mtk3tl5v45V5NKGB96nSvrpT4EZGbh_ir9yQ/exec";
         const appContent = document.getElementById('app-content');
-        let cacheBerita = [];
 
-        function setActive(el) {
-            document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active-nav'));
+        function setNav(el) {
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active-nav'));
             if(el) el.classList.add('active-nav');
             window.scrollTo(0,0);
         }
 
-        async function fetchData(target) {
-            try {
-                const response = await fetch(`${BASE_URL}?target=${target}`);
-                return await response.json();
-            } catch (err) { return []; }
+        function openDetail(judul, kategori, foto, isi) {
+            appContent.innerHTML = `
+                <div class="animate-fadeIn">
+                    <button onclick="loadBerita()" class="mb-4 font-black text-blue-900 flex items-center bg-white px-4 py-2 rounded-full shadow-sm w-fit text-[10px] uppercase border"> ← Kembali </button>
+                    <div class="bg-white rounded-[32px] overflow-hidden shadow-lg border border-gray-100">
+                        <img src="${foto}" class="w-full h-auto object-cover border-b-4 border-red-600">
+                        <div class="p-6">
+                            <span class="text-red-600 font-black text-[10px] uppercase tracking-widest bg-red-50 px-3 py-1 rounded-full">${kategori}</span>
+                            <h1 class="text-2xl font-black text-blue-900 mt-4 leading-tight uppercase italic">${judul}</h1>
+                            <hr class="my-6">
+                            <div class="text-gray-700 leading-relaxed text-base whitespace-pre-line">${isi}</div>
+                        </div>
+                    </div>
+                </div>`;
+            window.scrollTo(0,0);
         }
 
-        function shareNews(judul) {
-            if (navigator.share) {
-                navigator.share({ title: judul, text: judul, url: window.location.href });
-            }
-        }
-
-        function toggleReadMore(btn) {
-            const p = btn.previousElementSibling;
-            if (p.classList.contains('line-clamp-3')) {
-                p.classList.remove('line-clamp-3');
-                btn.innerText = "Sembunyikan";
-            } else {
-                p.classList.add('line-clamp-3');
-                btn.innerText = "Baca Selengkapnya";
-            }
-        }
-
-        // 1. BERANDA (ISI BERITA LANGSUNG)
         async function loadBerita(el, filter = 'Semua') {
-            if(el) setActive(el);
-            appContent.innerHTML = `<div class="text-center py-20 text-gray-400 font-bold animate-pulse text-[10px]">MEMUAT BERITA...</div>`;
-            
-            if (cacheBerita.length === 0 || el) {
-                cacheBerita = await fetchData("Berita");
-            }
-            
-            const categories = ["Semua", "Metropolitan", "Internasional", "Kriminal", "Olahraga"];
+            setNav(el);
+            appContent.innerHTML = "<div class='text-center py-20 font-bold text-gray-400 text-xs animate-pulse uppercase'>Menghubungkan Database...</div>";
+            const res = await fetch(`${BASE_URL}?target=Berita`);
+            const data = await res.json();
+
+            const cats = ["Semua", "Metropolitan", "Internasional", "Kriminal", "GayaHidup", "Olahraga"];
             let html = `<div class="flex gap-2 overflow-x-auto no-scrollbar mb-6 pb-2">`;
-            categories.forEach(k => {
-                const active = (filter === k) ? 'bg-red-600 text-white' : 'bg-blue-900 text-white opacity-40';
-                html += `<button onclick="loadBerita(null, '${k}')" class="${active} px-5 py-2 rounded-full text-[10px] font-black uppercase whitespace-nowrap transition-all">${k}</button>`;
+            cats.forEach(c => {
+                const active = (filter === c) ? 'bg-red-600 text-white' : 'bg-white text-blue-900 border border-gray-100';
+                html += `<button onclick="loadBerita(null, '${c}')" class="${active} px-5 py-2 rounded-full text-[10px] font-black uppercase shadow-sm">${c}</button>`;
             });
             html += `</div><div class="space-y-6">`;
 
+            // FILTER PERBAIKAN: Menghapus spasi dan case-insensitive agar 2 berita Metropolitan muncul semua
             let filtered = (filter === 'Semua') 
-                ? [...cacheBerita].reverse() 
-                : cacheBerita.filter(i => i.kategori && i.kategori.toLowerCase() === filter.toLowerCase()).reverse();
+                ? [...data].reverse() 
+                : data.filter(i => i.kategori && i.kategori.toString().trim().toLowerCase() === filter.toLowerCase()).reverse();
+
+            if(filtered.length === 0) {
+                html += `<div class="text-center py-10 text-gray-400 text-xs font-bold uppercase border-2 border-dashed rounded-3xl">Belum ada berita di kategori ${filter}</div>`;
+            }
 
             filtered.forEach(item => {
+                const deskripsi = item.isi || item.caption || "Klik untuk baca selengkapnya...";
                 html += `
-                <div class="bg-white rounded-[32px] overflow-hidden shadow-sm border border-gray-100 animate-fadeIn">
-                    <img src="${item.foto}" class="w-full h-56 object-cover bg-gray-100" onerror="this.src='https://via.placeholder.com/400x200?text=DKInews'">
+                <div onclick="openDetail(\`${item.judul}\`, \`${item.kategori}\`, \`${item.foto}\`, \`${deskripsi.replace(/"/g, '&quot;')}\`)" class="bg-white rounded-[32px] overflow-hidden shadow-md border border-gray-100 cursor-pointer animate-fadeIn">
+                    <img src="${item.foto}" class="w-full h-52 object-cover" onerror="this.src='https://via.placeholder.com/400x200?text=DKInews'">
                     <div class="p-6">
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="text-[10px] font-black text-red-600 uppercase tracking-widest">${item.kategori || 'News'}</span>
-                            <button onclick="shareNews('${item.judul}')" class="text-blue-900 opacity-50"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6a3 3 0 100-2.684l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" /></svg></button>
-                        </div>
-                        <h2 class="font-black text-xl leading-tight text-blue-900 mb-3 uppercase">${item.judul}</h2>
-                        <p class="text-gray-600 text-sm leading-relaxed mb-2 line-clamp-3">${item.isi}</p>
-                        <button onclick="toggleReadMore(this)" class="text-red-600 font-bold text-xs uppercase tracking-tighter">Baca Selengkapnya</button>
+                        <span class="text-[10px] font-black text-red-600 uppercase tracking-widest">${item.kategori}</span>
+                        <h2 class="font-black text-lg leading-tight text-blue-900 mt-1 uppercase italic">${item.judul}</h2>
+                        <p class="text-gray-500 text-xs mt-2 line-clamp-3">${deskripsi}</p>
                     </div>
                 </div>`;
             });
             appContent.innerHTML = html + "</div>";
         }
 
-        // 2. SEPUTAR DKI
         async function loadSeputar(el) {
-            setActive(el);
-            appContent.innerHTML = `<div class="text-center py-20 text-gray-400 font-bold text-[10px]">MEMUAT SEPUTAR DKI...</div>`;
-            const data = await fetchData("Seputar_Anda");
-            let html = `<h2 class="text-2xl font-black text-blue-900 mb-6 uppercase italic"><span class="text-red-600">S</span>eputar DKI</h2>`;
+            setNav(el);
+            appContent.innerHTML = "<div class='text-center py-20 font-bold text-gray-400 text-xs uppercase animate-pulse'>Memuat Laporan...</div>";
+            const res = await fetch(`${BASE_URL}?target=Seputar_Anda`);
+            const data = await res.json();
+            let html = `<h2 class="text-xl font-black text-blue-900 mb-6 uppercase italic"><span class="text-red-600">📍</span> Seputar DKI</h2><div class="space-y-6">`;
             data.reverse().forEach(item => {
+                const isi = item.isikonten || item.isi || "";
                 html += `
-                <div class="bg-white rounded-[32px] overflow-hidden shadow-sm border border-gray-100 mb-8 animate-fadeIn">
-                    <img src="${item.foto}" class="w-full h-52 object-cover bg-gray-100">
-                    <div class="p-6 border-t-4 border-red-600">
-                        <span class="text-[10px] font-black text-blue-900 uppercase tracking-widest">${item.jenis || 'Laporan Warga'}</span>
-                        <h3 class="font-black text-lg text-blue-900 mt-2 uppercase leading-tight">${item.judul}</h3>
-                        <p class="text-gray-600 text-sm mt-3 leading-relaxed">${item.isi}</p>
+                <div class="bg-white rounded-[32px] overflow-hidden shadow-md border border-gray-100">
+                    <img src="${item.foto}" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <span class="text-[10px] font-black text-blue-900 uppercase tracking-widest border-l-4 border-red-600 pl-2">${item.jenis || 'INFO'}</span>
+                        <h3 class="font-black text-lg text-blue-900 mt-2 uppercase italic">${item.judul}</h3>
+                        <p class="text-gray-600 text-sm mt-3 leading-relaxed whitespace-pre-line">${isi}</p>
                     </div>
                 </div>`;
             });
-            appContent.innerHTML = html;
+            appContent.innerHTML = html + "</div>";
         }
 
-        // 3. PROFIL & 4. SHOP Tetap Sama (Sesuai Versi Stabil Kamu)
         function loadProfil(el) {
-            setActive(el);
+            setNav(el);
             appContent.innerHTML = `
-                <div class="bg-blue-900 rounded-[40px] p-10 text-white shadow-2xl animate-fadeIn">
-                    <h2 class="text-4xl font-black mb-8 italic tracking-tighter text-red-600">DKInews</h2>
-                    <div class="space-y-8 text-sm">
-                        <section>
-                            <h3 class="text-red-500 font-black uppercase tracking-widest mb-3 text-[10px]">Tentang Kita</h3>
-                            <p class="leading-relaxed text-blue-50 opacity-80">DKInews hadir sebagai wadah informasi tercepat, aktual, dan terpercaya untuk seluruh masyarakat DKI Jakarta dan Indonesia.</p>
-                        </section>
-                        <hr class="opacity-10">
-                        <section>
-                            <h3 class="text-red-500 font-black uppercase tracking-widest mb-3 text-[10px]">Redaksi Utama</h3>
-                            <p class="leading-relaxed text-blue-50">
-                                <b class="text-white font-bold text-xs uppercase">Pemimpin Redaksi:</b><br>Saifudin<br>Redaktur Pelaksana:<br>Kokoh Afu<br>Sekretaris Redaksi:<br>Andika Pratama<br>Wartawan:<br>Teuku Barrun, Kamal, Nico, Juhendri, Yasir, Afi, Junaidi<br>Hukum & Lawyer:<br>Teuku Barrun & Partner Lawfirm<br>Email: redaksidkinews.com<br>
-                                <b class="text-white font-bold text-xs uppercase">Alamat:</b><br>Bangka Raya XII Kemang, Jakarta Selatan
-                            </p>
-                        </section>
+                <div class="bg-blue-900 rounded-[40px] p-8 text-white text-center shadow-xl animate-fadeIn border-b-8 border-red-600">
+                    <div class="w-24 h-24 bg-white rounded-full mx-auto mb-6 flex items-center justify-center text-3xl font-black italic text-blue-900 shadow-lg border-4 border-red-600">DKI</div>
+                    <h2 class="text-3xl font-black mb-2 uppercase italic tracking-tighter">DKInews</h2>
+                    <p class="text-blue-200 text-[10px] font-bold uppercase tracking-widest mb-8">Referensi Informasi Aktual DKI Jakarta</p>
+                    <div class="space-y-4 text-left bg-blue-800/50 p-6 rounded-[30px] text-sm border border-blue-700">
+                        <div><p class="text-red-400 font-bold uppercase text-[9px] tracking-widest">Pemimpin Redaksi</p><p class="font-bold uppercase text-white">Saifudin</p></div>
+                        <div><p class="text-red-400 font-bold uppercase text-[9px] tracking-widest">Redaktur Pelaksana</p><p class="font-bold uppercase text-white">Kokoh Afu</p></div>
+			<div><p class="text-red-400 font-bold uppercase text-[9px] tracking-widest">Sekretaris Redaksi</p><p class="font-bold uppercase text-white">Andika Pratama</p></div>	
+			<div><p class="text-red-400 font-bold uppercase text-[9px] tracking-widest">Hukum & Lawyer</p><p class="font-bold uppercase text-white">Teuku Barrun & Partner</p></div>
+			<div><p class="text-red-400 font-bold uppercase text-[9px] tracking-widest">Wartawan</p><p class="font-bold uppercase text-white">Teuku Barrun<br>Kamal<br>Nico<br>Juhendri<br>Yasir<Ranto></p></div>	
+			<div><p class="text-red-400 font-bold uppercase text-[9px] tracking-widest">Alamat Redaksi</p><p class="font-bold uppercase text-white leading-tight">Bangka Raya XII, Kemang, Jakarta Selatan</p></div>
+                        <div><p class="text-red-400 font-bold uppercase text-[9px] tracking-widest">Kontak Redaksi</p><p class="font-bold text-white">redaksi@dkinews.id</p></div>
                     </div>
                 </div>`;
         }
 
         async function loadShop(el) {
-            setActive(el);
-            appContent.innerHTML = `<div class="text-center py-20 text-gray-400 font-bold text-[10px]">MEMUAT TOKO...</div>`;
-            const data = await fetchData("Shop");
-            let html = `<div class="grid grid-cols-2 gap-4">`;
+            setNav(el);
+            appContent.innerHTML = "<div class='text-center py-20 font-bold text-gray-400 text-xs uppercase animate-pulse'>Menyiapkan Etalase...</div>";
+            const res = await fetch(`${BASE_URL}?target=Shop`);
+            const data = await res.json();
+            
+            // KETERANGAN AFFILIATE (KEMBALI ADA)
+            let html = `
+                <div class="bg-gradient-to-r from-blue-900 to-blue-800 p-5 rounded-[25px] mb-6 text-white shadow-lg border-b-4 border-red-600">
+                    <p class="text-[9px] font-black uppercase tracking-[0.2em] text-red-500 mb-1">DKInews Affiliate</p>
+                    <p class="text-xs font-bold leading-tight opacity-90 uppercase italic">Produk Rekomendasi Aman & Terpercaya</p>
+                </div>
+                <div class="grid grid-cols-2 gap-4">`;
+            
             data.forEach(item => {
+                const link = item.isi || item.link;
                 html += `
-                <div class="bg-white rounded-[28px] overflow-hidden shadow-sm border border-gray-100 p-3 animate-fadeIn">
-                    <img src="${item.foto}" class="w-full aspect-square object-cover rounded-[20px] mb-3">
-                    <h3 class="font-black text-blue-900 text-[10px] leading-tight h-8 overflow-hidden uppercase">${item.judul}</h3>
-                    <a href="${item.isi}" target="_blank" class="block w-full bg-blue-900 text-white text-center py-2.5 rounded-xl mt-3 text-[10px] font-black uppercase">Beli</a>
+                <div class="bg-white rounded-[30px] p-3 border border-gray-100 shadow-sm text-center animate-fadeIn">
+                    <img src="${item.foto}" class="w-full aspect-square object-cover rounded-[22px] mb-3 bg-gray-50">
+                    <h3 class="font-black text-blue-900 text-[10px] h-8 overflow-hidden uppercase px-1 leading-tight italic">${item.judul || item.namaproduk}</h3>
+                    <a href="${link}" target="_blank" class="block w-full bg-blue-900 text-white py-2.5 rounded-xl mt-3 text-[10px] font-black uppercase active:bg-red-600 transition-colors shadow-md">Beli Sekarang</a>
                 </div>`;
             });
             appContent.innerHTML = html + "</div>";
         }
 
-        // ADMIN
-        document.getElementById('adminBtn').onclick = () => { if(prompt("Password:") === "123") document.getElementById('adminModal').classList.remove('hidden'); };
+        document.getElementById('adminBtn').onclick = () => { if(prompt("Password Admin:") === "123") document.getElementById('adminModal').classList.remove('hidden'); };
         function closeAdmin() { document.getElementById('adminModal').classList.add('hidden'); }
         async function prosesSubmit() {
-            const btn = document.getElementById('submitBtn'); btn.innerHTML = "MENGIRIM..."; btn.disabled = true;
+            const btn = document.getElementById('submitBtn'); btn.innerHTML = "SEDANG MENGIRIM..."; btn.disabled = true;
             const payload = { type: document.getElementById('inputType').value, kategori: document.getElementById('inputKategori').value, judul: document.getElementById('inputJudul').value, foto: document.getElementById('inputFoto').value, isi: document.getElementById('inputIsi').value };
-            try { await fetch(BASE_URL, { method: 'POST', body: JSON.stringify(payload) }); alert("Sukses!"); location.reload(); } catch (err) { alert("Gagal!"); btn.innerHTML = "POSTING SEKARANG"; btn.disabled = false; }
+            try { await fetch(BASE_URL, { method: 'POST', body: JSON.stringify(payload) }); alert("BERHASIL!"); location.reload(); } 
+            catch (e) { alert("GAGAL!"); btn.innerHTML = "Kirim Sekarang"; btn.disabled = false; }
         }
 
         loadBerita();
